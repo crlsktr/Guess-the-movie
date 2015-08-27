@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Jorri Falslev on 8/18/2015.
  */
@@ -30,12 +33,12 @@ public class MovieDBHandler extends SQLiteOpenHelper
     public void onCreate ( SQLiteDatabase db )
     {
         //Structure of the Movies table
-        String CREATE_TABLE_MOVIES = "CREATE TABLE IF NOT EXISTS "+ TABLE_MOVIES +
-                "( " + COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_NAME + " TEXT, "+
-                COLUMN_PHRASE + " TEXT, "+
-                COLUMN_CAPTURE + " TEXT, "+
-                COLUMN_COVER + " TEXT, "+
+        String CREATE_TABLE_MOVIES = "CREATE TABLE IF NOT EXISTS " + TABLE_MOVIES +
+                "( " + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_NAME + " TEXT, " +
+                COLUMN_PHRASE + " TEXT, " +
+                COLUMN_CAPTURE + " TEXT, " +
+                COLUMN_COVER + " TEXT, " +
                 COLUMN_AUDIOCLIP + " TEXT)";
 
         db.execSQL ( CREATE_TABLE_MOVIES );
@@ -48,41 +51,97 @@ public class MovieDBHandler extends SQLiteOpenHelper
         onCreate ( db );
     }
 
-    public void addMovie(Movie nMovie)
+    public void addMovie ( Movie nMovie )
     {
-        ContentValues values = new ContentValues (  );
+        ContentValues values = new ContentValues ();
         values.put ( COLUMN_NAME, nMovie.get_name () );
-        values.put ( COLUMN_CAPTURE,nMovie.get_capture () );
-        values.put ( COLUMN_COVER,nMovie.get_cover () );
-        values.put ( COLUMN_PHRASE,nMovie.get_capture () );
+        values.put ( COLUMN_PHRASE, nMovie.get_phrase () );
+        values.put ( COLUMN_COVER, nMovie.get_cover () );
+        values.put ( COLUMN_CAPTURE, nMovie.get_capture () );
         values.put ( COLUMN_AUDIOCLIP, nMovie.get_audioclip () );
         SQLiteDatabase db = this.getWritableDatabase ();
 
         db.insert ( TABLE_MOVIES, null, values );
     }
 
-    public Movie findMovieByName(String movieName) {
+    public Movie findMovieByName ( String movieName )
+    {
         String query = "Select * FROM " + TABLE_MOVIES + " WHERE " + COLUMN_NAME + " =  \"" + movieName + "\"";
 
         SQLiteDatabase db = this.getReadableDatabase ();
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery ( query, null );
 
-        Movie movie = new Movie();
+        Movie movie = new Movie ();
 
-        if (cursor.moveToFirst()) {
-            cursor.moveToFirst();
-            movie.set_id (Integer.parseInt(cursor.getString(0)));
-            movie.set_name (cursor.getString(1));
-            movie.set_phrase (cursor.getString(2));
+        if ( cursor.moveToFirst () )
+        {
+            cursor.moveToFirst ();
+            movie.set_id ( Integer.parseInt ( cursor.getString ( 0 ) ) );
+            movie.set_name ( cursor.getString ( 1 ) );
+            movie.set_phrase ( cursor.getString ( 2 ) );
             movie.set_capture ( cursor.getString ( 3 ) );
             movie.set_cover ( cursor.getString ( 4 ) );
             movie.set_audioclip ( cursor.getString ( 5 ) );
-            cursor.close();
-        } else {
+            cursor.close ();
+        }
+        else
+        {
             movie = null;
         }
         db.close ();
         return movie;
+    }
+
+    public boolean movieExist ( Movie sMovie )
+    {
+        String query = "Select * FROM " + TABLE_MOVIES + " WHERE " + COLUMN_NAME + " =  \"" + sMovie.get_name () + "\"";
+
+        SQLiteDatabase db = this.getReadableDatabase ();
+
+        Cursor cursor = db.rawQuery ( query, null );
+
+        if ( cursor.moveToFirst () )
+        {
+            db.close ();
+            return true;
+        }
+        else
+        {
+            db.close ();
+            return false;
+        }
+
+    }
+
+    public List< Movie > getAllMovies ()
+    {
+        String query = "Select * FROM " + TABLE_MOVIES;
+
+        List< Movie > allmovies = new ArrayList<> ();
+        SQLiteDatabase db = this.getReadableDatabase ();
+
+        Cursor cursor = db.rawQuery ( query, null );
+
+
+        //cursor.moveToFirst ();
+        while ( cursor.moveToNext () )
+        {
+            Movie movie = new Movie ();
+
+            movie.set_id ( Integer.parseInt ( cursor.getString ( 0 ) ) );
+            movie.set_name ( cursor.getString ( 1 ) );
+            movie.set_phrase ( cursor.getString ( 2 ) );
+            movie.set_capture ( cursor.getString ( 3 ) );
+            movie.set_cover ( cursor.getString ( 4 ) );
+            movie.set_audioclip ( cursor.getString ( 5 ) );
+
+            allmovies.add ( movie );
+        }
+
+        cursor.close ();
+        db.close ();
+
+        return allmovies;
     }
 }
