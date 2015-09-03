@@ -13,7 +13,7 @@ public class Movie
     private String _cover;
     private String _audioclip;
 
-    public Movie (String name, String capture, String cover, String phrase, String audioclip)
+    public Movie (String name, String phrase, String cover, String capture, String audioclip)
     {
         _name = name;
         _capture = capture;

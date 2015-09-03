@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">GuessTheMovie</string>
 
-    <string name="fetch_movie">Get a movie</string>
+    <string name="fetch_movie">Submit answer</string>
     <string name="action_settings">Settings</string>
+    <string name="next_hint">Next hint</string>
+    <string name="visual_description">Visual hints</string>
 </resources>
