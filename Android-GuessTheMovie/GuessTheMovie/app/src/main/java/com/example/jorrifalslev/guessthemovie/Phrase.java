@@ -19,7 +19,10 @@ import android.widget.Toast;
 import com.example.jorrifalslev.guessthemovie.moviedb.Movie;
 import com.example.jorrifalslev.guessthemovie.moviedb.MovieDBHandler;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -38,7 +41,7 @@ public class Phrase extends AppCompatActivity
 
 
         //Load animation
-        fadeOut = AnimationUtils.loadAnimation ( getApplicationContext (),R.anim.fade_out );
+        fadeOut = AnimationUtils.loadAnimation ( getApplicationContext (), R.anim.fade_out );
         fadeOut.setAnimationListener ( new Animation.AnimationListener ()
         {
             @Override
@@ -66,12 +69,15 @@ public class Phrase extends AppCompatActivity
 
     }
 
-    public void nextHintBtn(View view)
+    public void nextHintBtn ( View view )
     {
-        Toast.makeText ( getBaseContext (),"showing next hint",Toast.LENGTH_LONG );
+        Toast.makeText ( getBaseContext (), "showing next hint", Toast.LENGTH_LONG );
         ImageView image = ( ImageView ) findViewById ( R.id.imageView );
-        image.setVisibility ( View.GONE );
-        image.startAnimation ( fadeOut );
+        if ( image.getVisibility () != View.GONE )
+        {
+            image.setVisibility ( View.GONE );
+            image.startAnimation ( fadeOut );
+        }
     }
 
     private void createDBfile ()
