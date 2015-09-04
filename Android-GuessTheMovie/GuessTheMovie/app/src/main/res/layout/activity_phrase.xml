@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/PhraseLabel"
+        android:visibility="invisible"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/button"
         android:layout_toLeftOf="@+id/button"/>

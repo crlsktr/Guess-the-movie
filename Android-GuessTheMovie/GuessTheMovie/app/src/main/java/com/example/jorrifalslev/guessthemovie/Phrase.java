@@ -1,7 +1,5 @@
 package com.example.jorrifalslev.guessthemovie;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,10 +17,7 @@ import android.widget.Toast;
 import com.example.jorrifalslev.guessthemovie.moviedb.Movie;
 import com.example.jorrifalslev.guessthemovie.moviedb.MovieDBHandler;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -32,6 +27,7 @@ public class Phrase extends AppCompatActivity
     private final String dbFileName = "movieDB.db";
     private Movie selectedMovie;
     private Animation fadeOut;
+    private Animation fadein;
 
     @Override
     protected void onCreate ( Bundle savedInstanceState )
@@ -42,6 +38,7 @@ public class Phrase extends AppCompatActivity
 
         //Load animation
         fadeOut = AnimationUtils.loadAnimation ( getApplicationContext (), R.anim.fade_out );
+
         fadeOut.setAnimationListener ( new Animation.AnimationListener ()
         {
             @Override
@@ -63,6 +60,7 @@ public class Phrase extends AppCompatActivity
             }
         } );
 
+        fadein = AnimationUtils.loadAnimation ( getApplicationContext (), R.anim.fade_in );
         //Create DB file
         createDBfile ();
         FetchMovie ();
@@ -72,6 +70,23 @@ public class Phrase extends AppCompatActivity
     public void nextHintBtn ( View view )
     {
         Toast.makeText ( getBaseContext (), "showing next hint", Toast.LENGTH_LONG );
+        fadeOutCover ();
+        fadeInPhrase ();
+    }
+
+    private void fadeInPhrase ()
+    {
+        TextView phrase = (TextView) findViewById ( R.id.PhraseLabel );
+
+        if ( phrase.getVisibility () != View.VISIBLE )
+        {
+            phrase.setVisibility ( View.VISIBLE );
+            phrase.startAnimation ( fadein );
+        }
+    }
+
+    private void fadeOutCover ()
+    {
         ImageView image = ( ImageView ) findViewById ( R.id.imageView );
         if ( image.getVisibility () != View.GONE )
         {
