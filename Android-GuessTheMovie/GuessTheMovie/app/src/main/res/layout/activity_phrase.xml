@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/PhraseLabel"
+        android:visibility="invisible"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/button"
         android:layout_toLeftOf="@+id/button"/>
@@ -57,7 +58,6 @@
         android:layout_height="wrap_content"
         android:text="@string/next_hint"
         android:id="@+id/button2"
-        android:onClick="nextHintBtn"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/imageView"
         android:layout_alignStart="@+id/imageView"/>
